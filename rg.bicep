@@ -1,19 +1,14 @@
 // Parameters
-param rgName string = 'az104rg'
-param location string = 'eastus'
 param vmName string = 'myVM'
+param location string = resourceGroup().location
 param adminUsername string = 'azureuser'
-param subnet string = 'az104sub'
 @secure()
 param adminPassword string
+param subnetName string = 'default'
 
-resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: rgName
-  location: location
-}
-
+// Virtual Network
 resource vnet 'Microsoft.Network/virtualNetworks@2021-03-01' = {
-  name: '${rgName}-vnet'
+  name: '${vmName}-vnet'
   location: location
   properties: {
     addressSpace: {
@@ -23,7 +18,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-03-01' = {
     }
     subnets: [
       {
-        name: 'subnet'
+        name: subnetName
         properties: {
           addressPrefix: '10.0.0.0/24'
         }
@@ -68,7 +63,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   location: location
   properties: {
     hardwareProfile: {
-      vmSize: 'Standard_B1s'
+      vmSize: 'Standard_D128ads_v7 '   // VM size
     }
     osProfile: {
       computerName: vmName
@@ -79,7 +74,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       imageReference: {
         publisher: 'Canonical'
         offer: 'UbuntuServer'
-        sku: '18.04-LTS'
+        sku: '16_04-lts-gen2'   // ✅ OS image SKU
         version: 'latest'
       }
       osDisk: {
