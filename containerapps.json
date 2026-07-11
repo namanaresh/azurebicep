@@ -69,8 +69,8 @@
               "name": "myapp",
               "image": "[parameters('containerImage')]",
               "resources": {
-                "cpu": 0.5,
-                "memory": "1Gi"
+                "cpu": 1,
+                "memory": "2Gi"
               }
             }
           ]
